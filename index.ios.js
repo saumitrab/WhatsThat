@@ -35,7 +35,7 @@ export default class WhatsThat extends Component {
           <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
         </Camera>
         <Text style={styles.instructions}>
-          To get started, edit index.ios.js
+          {this.state.textToDisplay}
         </Text>
       </View>
     );
@@ -43,7 +43,9 @@ export default class WhatsThat extends Component {
 
   takePicture() {
     this.camera.capture()
-      .then((data) => console.log(data))
+      .then((data) => {
+        this.setState( {textToDisplay: data.path} );
+      })
       .catch(err => console.error(err));
   }
 }
