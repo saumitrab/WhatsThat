@@ -16,11 +16,16 @@ import {
 
 import Camera from 'react-native-camera';
 
+const vision = require('./src/vision');
+
 export default class WhatsThat extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {textToDisplay: 'Capture Ingradients'}
+    this.state = {
+      textToDisplay: 'Capture Ingradients',
+      visionClient: null,
+    }
   }
 
   render() {
@@ -44,7 +49,10 @@ export default class WhatsThat extends Component {
   takePicture() {
     this.camera.capture()
       .then((data) => {
-        this.setState( {textToDisplay: data.path} );
+        this.setState( {textToDisplay: 'Loading...'} );
+
+        vision.makeRequest(data)
+          .then(this.setState( {textToDisplay: data} ));
       })
       .catch(err => console.error(err));
   }
